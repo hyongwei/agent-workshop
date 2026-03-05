@@ -340,6 +340,126 @@
   .part-divider { animation: fadeUp 0.5s 0.15s ease both; }
   .section      { animation: fadeUp 0.5s 0.2s ease both; }
 
+  /* ── TOC ── */
+  .toc {
+    border: 1px solid var(--paper-rule);
+    border-left: 3px solid var(--accent);
+    background: var(--paper-warm);
+    padding: 20px 24px 24px;
+    margin-bottom: 0;
+  }
+
+  .toc-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .toc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 32px;
+  }
+
+  .toc-part {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--ink-light);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--paper-rule);
+    padding-bottom: 6px;
+  }
+
+  .toc-item {
+    display: block;
+    font-size: 13px;
+    color: var(--accent-mid);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--accent-mid);
+    padding: 5px 0;
+    line-height: 1.5;
+  }
+
+  .toc-item:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* ── REF BLOCK ── */
+  .ref-block {
+    margin-top: 20px;
+    border-top: 1px dashed var(--paper-rule);
+    padding-top: 14px;
+  }
+
+  .ref-summary {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--ink-light);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    user-select: none;
+  }
+
+  .ref-summary::-webkit-details-marker { display: none; }
+
+  .ref-summary::before {
+    content: '▶';
+    font-size: 8px;
+    color: var(--ink-faint);
+    transition: transform 0.2s ease;
+  }
+
+  details[open] .ref-summary::before {
+    transform: rotate(90deg);
+  }
+
+  details[open] .ref-summary {
+    color: var(--ink-mid);
+  }
+
+  .ref-list {
+    list-style: none;
+    padding: 10px 0 0 20px;
+  }
+
+  .ref-list li {
+    font-size: 13px;
+    color: var(--ink-light);
+    padding: 4px 0;
+    border-bottom: 1px dashed var(--paper-rule);
+    line-height: 1.65;
+  }
+
+  .ref-list li:last-child { border-bottom: none; }
+
+  .ref-list li a {
+    color: var(--accent-mid);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--accent-mid);
+  }
+
+  .ref-list li a:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  .ref-list li::before {
+    content: '— ';
+    color: var(--ink-faint);
+    font-family: var(--mono);
+    font-size: 11px;
+  }
+
   /* ── RESPONSIVE ── */
   @media (max-width: 600px) {
     .page { padding: 48px 24px 80px; }
@@ -347,6 +467,7 @@
     .meta-cell { border-right: none; border-bottom: 1px solid var(--paper-rule); }
     .meta-cell:last-child { border-bottom: none; }
     .part-label { font-size: 18px; }
+    .toc-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -356,7 +477,7 @@
   <!-- HEADER -->
   <header class="site-header">
     <span class="header-label">課綱文件</span>
-    <span class="draft-badge">草稿</span>
+    <span class="draft-badge">草稿-v1.1</span>
   </header>
 
   <!-- TITLE -->
@@ -382,30 +503,58 @@
     </div>
   </div>
 
+  <!-- TOC -->
+  <nav class="toc">
+    <p class="toc-label">課程架構</p>
+    <div class="toc-grid">
+      <div class="toc-col">
+        <p class="toc-part">分享 Part</p>
+        <a href="#ch01" class="toc-item">CH.01　LLM 的演進</a>
+        <a href="#ch02" class="toc-item">CH.02　什麼是 Agent？</a>
+        <a href="#ch03" class="toc-item">CH.03　數位服務本質的轉變</a>
+        <a href="#ch04" class="toc-item">CH.04　職能角色的重塑</a>
+      </div>
+      <div class="toc-col">
+        <p class="toc-part">實作 Part</p>
+        <a href="#lab01" class="toc-item">實作 (1)　Agent 協助前後端開發</a>
+        <a href="#lab02" class="toc-item">實作 (2)　搭建 Agent Prototype</a>
+      </div>
+    </div>
+  </nav>
+
   <!-- ══════════════════════════════════ -->
   <!-- PART I                             -->
   <!-- ══════════════════════════════════ -->
   <div class="part-divider">
     <span class="part-label">分享 Part</span>
-    <span class="part-time">認識 Agent 與業界現況</span>
+    <span class="part-time">認識 Agent 與實務變化</span>
   </div>
 
   <!-- 章節 1 -->
-  <div class="section">
+  <div class="section" id="ch01">
     <div class="section-header">
       <span class="section-number">CH.01</span>
       <h2 class="section-title">LLM 的演進</h2>
       <span class="section-time">5–10 min</span>
     </div>
     <ul class="point-list">
-      <li><span>LLM 發展脈絡：從早期語言模型到 GPT、Claude 等大型模型的躍進</span></li>
-      <li><span>模型能力的快速演進：理解、推理、生成能力的質變</span></li>
-      <li><span><strong>A Bitter Lesson 的實現：</strong>規模與通用計算取代人工知識工程，模型能力大幅躍進</span></li>
+      <li><span>LLM 發展脈絡：從早期語言模型(BERT)到 ChatGPT、Claude 等大型模型的躍進</span></li>
+      <li><span>模型能力的快速演進：本質仍是"預測"，但理解、推理、生成能力發生質變</span></li>
+      <li><span><strong>A Bitter Lesson 苦澀的教訓 By Rich Sutton：</strong>規模與通用計算終將勝過人工知識工程</span></li>
     </ul>
+    <details class="ref-block">
+      <summary class="ref-summary">參考資料</summary>
+      <ul class="ref-list">
+        <li><a href="https://amjltc295.medium.com/%E7%BF%BB%E8%AD%AF-%E7%97%9B%E8%8B%A6%E7%9A%84%E6%95%99%E8%A8%93-the-bitter-lesson-bd96c154a3c8" target="_blank">The Bitter Lesson 苦澀的教訓</a></li>
+        <li><a href="https://hao.cnyes.com/post/137728" target="_blank">大語言模型簡史：從 Transformer（2017）到 DeepSeek-R1（2025）的進化之路</a></li>
+        <li><a href="https://www.youtube.com/watch?v=gdPMNZo4Vb8" target="_blank">El Cerebro detrás de OpenAI y Google 🤖 | Łukasz Kaiser, Lead Researcher en OpenAI</a></li>
+        <li><a href="https://www.facebook.com/hinet/posts/transformer-%E4%BD%9C%E8%80%85-%C5%82ukasz-%E6%8F%AD%E7%A4%BA%E6%8E%A8%E7%90%86%E5%85%B8%E7%AF%84%E5%8F%96%E4%BB%A3llmai%E7%9A%84%E7%9C%9F%E6%AD%A3%E7%93%B6%E9%A0%B8%E5%8F%AA%E5%89%A9%E7%A1%AC%E9%AB%94%C5%82ukasz-kaiser-%E7%9B%A7%E5%8D%A1%E6%96%AF%E5%87%B1%E6%92%92%E9%80%99%E5%80%8B%E5%90%8D%E5%AD%97%E4%BD%A0%E5%8F%AF%E8%83%BD%E4%B8%8D%E7%86%9F%E4%BD%86%E4%BB%96%E5%8F%83%E8%88%87%E6%92%B0%E5%AF%AB%E7%9A%84%E8%AB%96/10162418385608318/" target="_blank">Transformer 作者 Łukasz 揭示「推理典範」取代 LLM</a></li>
+      </ul>
+    </details>
   </div>
 
   <!-- 章節 2 -->
-  <div class="section">
+  <div class="section" id="ch02">
     <div class="section-header">
       <span class="section-number">CH.02</span>
       <h2 class="section-title">什麼是 Agent？</h2>
@@ -413,15 +562,23 @@
     </div>
     <ul class="point-list">
       <li><span>LLM 賦予機器高度自主性，以 LLM 為核心打造的服務完全顛覆傳統產品範式</span></li>
-      <li><span>Agent 的核心運作邏輯：<strong>Perception → Memory → Planning → Action</strong> 循環</span></li>
+      <li><span>Agent 的核心運作邏輯：<strong>Perception → Memory → Planning → Action</strong> (Plan-and-execute mode)</span></li>
       <li><span><strong>Simon's Scissors：</strong>模型表現由 <span class="tag">Cognition</span> 模型參數結構 與 <span class="tag">Context</span> 輸入脈絡 共同決定</span></li>
       <li><span>由此帶出兩個新興領域：Prompt Engineering → <strong>Context Engineering</strong>、Data → <strong>Environment</strong></span></li>
       <li><span><strong>補充案例：</strong>資料結構清晰、API 整理完善的組織導入 Agent 效率更高——資訊環境的品質決定 Agent 能力上限</span></li>
     </ul>
+    <details class="ref-block">
+      <summary class="ref-summary">參考資料</summary>
+      <ul class="ref-list">
+        <li><a href="https://lilianweng.github.io/posts/2023-06-23-agent/" target="_blank">LLM Powered Autonomous Agent By Lillian Weng </a></li>
+        <li><a href="https://ihower.tw/blog/12817-context-engineering" target="_blank">什麼是 Context Engineering 上下文工程？</a></li>
+        <li><a href="https://www.youtube.com/watch?v=8kMaTybvDUw" target="_blank">12-Factor Agents: Patterns of reliable LLM applications — Dex Horthy, HumanLayer</a></li>
+      </ul>
+    </details>
   </div>
 
   <!-- 章節 3 -->
-  <div class="section">
+  <div class="section" id="ch03">
     <div class="section-header">
       <span class="section-number">CH.03</span>
       <h2 class="section-title">數位服務本質的轉變</h2>
@@ -430,13 +587,20 @@
     <ul class="point-list">
       <li><span>服務結構演進：<strong>UI + Flow（使用者自行操作）→ Agent（使用者交付任務）</strong></span></li>
       <li><span>User 的擴展：使用者不再只是人，Agent 也是 User——介面、資料格式、回應結構都需要重新思考</span></li>
-      <li><span>因應 Agent 新軟體架構，設計師任務產生轉變：從設計操作流程，轉向設計任務邊界與行為準則；設計領域熱議的典範轉移：<strong>User Journey Mapping → Intent-System Mapping</strong></span></li>
-      <li><span>服務研究與測試的轉變：從觀察「人如何操作介面」到理解「Agent 在哪個環節認知失敗」；<strong>Observability（可觀測性）</strong>成為新的核心能力，需追蹤 context 理解與工具調用鏈</span></li>
+      <li><span>因應 Agent 新軟體架構，設計師任務產生轉變：從設計操作流程，轉向設計系統編排、任務邊界與行為準則；在<strong>User Journey Mapping 之上建構 Intent-System Mapping</strong></span></li>
+      <li><span>服務研究與測試的轉變：從觀察「人如何操作介面」到理解「Agent 在哪個環節認知失敗」；<strong>Observability（可觀測性）</strong>為構建Agent服務的基石，需追蹤模型決策過程</span></li>
     </ul>
+    <details class="ref-block">
+      <summary class="ref-summary">參考資料</summary>
+      <ul class="ref-list">
+        <li><a href="https://www.youtube.com/watch?v=LCEmiRjPEtQ" target="_blank">Andrej Karpathy: Software Is Changing (Again)</a></li>
+        <li><a href="https://www.salesforce.com/blog/ux-shift-to-agentic-experience-design/" target="_blank">How to Embrace the Great UX Paradigm Shift to Agentic Experience Design</a></li>
+      </ul>
+    </details>
   </div>
 
   <!-- 章節 4 -->
-  <div class="section">
+  <div class="section" id="ch04">
     <div class="section-header">
       <span class="section-number">CH.04</span>
       <h2 class="section-title">職能角色的重塑</h2>
@@ -444,10 +608,18 @@
     </div>
     <ul class="point-list">
       <li><span>過去的職能分工源自舊結構需求，服務結構改變則各角色被期待交付的產出跟著轉變</span></li>
-      <li><span>各職種的危與機：當 Agent 可以生成原型、自動分析行為數據，不可替代的核心價值是什麼？</span></li>
-      <li><span>未來可能進入職能邊界模糊化的時代：<strong>個人全能化</strong> vs. <strong>更高抽象層次的再分工</strong></span></li>
-      <li><span>稀缺的將是「能清楚定義問題、設定目標、判斷產出品質」的整合型判斷力——呼應 <strong>How → What</strong> 的轉移</span></li>
+      <li><span>各職種的危與機：當 Agent 可以一鍵生成原型、規格、程式碼、分析行為數據，不可替代的核心價值是什麼？</span></li>
+      <li><span>職能邊界模糊化的時代來臨：<strong>個人全能化</strong> vs. <strong>更高抽象層次的再分工</strong></span></li>
+      <li><span>稀缺的將是「能清楚定義問題、設定目標、判斷產出品質」的整合型判斷力—— <strong>How → WHY</strong> 轉移，Product Sense將成為核心競爭力</span></li>
     </ul>
+    <details class="ref-block">
+      <summary class="ref-summary">參考資料</summary>
+      <ul class="ref-list">
+        <li><a href="https://www.youtube.com/watch?v=eh8bcBIAAFo" target="_blank">The design process is dead. Here's what's replacing it. | Jenny Wen (head of design at Claude)</a></li>
+        <li><a href="https://blog.langchain.com/agent-engineering-a-new-discipline/" target="_blank">Agent Engineering: A New Discipline</a></li>
+        <li><a href="https://petersuppi.substack.com/p/ai-product-sense-part-1?utm_source=substack&utm_medium=web&utm_campaign=international-leaderboard" target="_blank">AI 時代的產品判斷力：Product Sense 全指南 — Part 1：解構產品品味</a></li>
+      </ul>
+    </details>
   </div>
 
   <!-- ══════════════════════════════════ -->
@@ -459,7 +631,7 @@
   </div>
 
   <!-- 實作 1 -->
-  <div class="practice-card">
+  <div class="practice-card" id="lab01">
     <div class="practice-header">
       <h2>實作 (1)　用 Agent 協助開發前後端網路應用<br>——無技術背景的起手式</h2>
       <span class="time-badge">30 min</span>
@@ -473,11 +645,17 @@
         <li><span>如何與 Agent 協作開發：怎麼描述需求、怎麼拆解任務、怎麼看懂 Agent 產出的程式碼</span></li>
         <li><span><strong>實作：</strong>從一句話需求出發，透過 Agent 逐步建立一個可運行的簡單網路應用</span></li>
       </ul>
+      <details class="ref-block">
+        <summary class="ref-summary">參考資料</summary>
+        <ul class="ref-list">
+          <li>（待填入）</li>
+        </ul>
+      </details>
     </div>
   </div>
 
   <!-- 實作 2 -->
-  <div class="practice-card">
+  <div class="practice-card" id="lab02">
     <div class="practice-header">
       <h2>實作 (2)　搭建一個 Agent Prototype<br>——工具調用與 Context 加載</h2>
       <span class="time-badge">30 min</span>
@@ -489,6 +667,12 @@
         <li><span>Context 加載的實踐：如何將知識、文件、歷史對話注入 Agent 的運作流程</span></li>
         <li><span>快速實現一個可展示的 Agent Prototype，體驗從零到可用的完整流程</span></li>
       </ul>
+      <details class="ref-block">
+        <summary class="ref-summary">參考資料</summary>
+        <ul class="ref-list">
+          <li>（待填入）</li>
+        </ul>
+      </details>
     </div>
   </div>
 
