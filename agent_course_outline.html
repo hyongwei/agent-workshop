@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Agent 理論與實作工作坊｜課綱草稿</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;600&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f0f0f;
+    --ink-mid: #3a3a3a;
+    --ink-light: #7a7a7a;
+    --ink-faint: #b8b8b8;
+    --paper: #f7f4ef;
+    --paper-warm: #ede9e2;
+    --paper-rule: #d8d3ca;
+    --accent: #1a3a6e;
+    --accent-mid: #2d5aa0;
+    --accent-soft: #dce6f5;
+    --red: #b5340a;
+    --mono: 'DM Mono', monospace;
+    --serif: 'Noto Serif TC', serif;
+    --sans: 'Noto Sans TC', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.8;
+    min-height: 100vh;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── LAYOUT ── */
+  .page {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 80px 48px 120px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--paper-rule);
+    margin-bottom: 72px;
+  }
+
+  .header-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--ink-light);
+    text-transform: uppercase;
+  }
+
+  .draft-badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--red);
+    border: 1px solid var(--red);
+    padding: 3px 10px;
+    text-transform: uppercase;
+  }
+
+  /* ── TITLE BLOCK ── */
+  .title-block {
+    margin-bottom: 64px;
+  }
+
+  .title-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--accent-mid);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  h1.main-title {
+    font-family: var(--serif);
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+  }
+
+  h1.main-title em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .title-subtitle {
+    font-size: 15px;
+    color: var(--ink-mid);
+    font-weight: 300;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── META TABLE ── */
+  .meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--paper-rule);
+    margin-bottom: 80px;
+  }
+
+  .meta-cell {
+    padding: 20px 24px;
+    border-right: 1px solid var(--paper-rule);
+  }
+
+  .meta-cell:last-child { border-right: none; }
+
+  .meta-key {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .meta-val {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+
+  /* ── PART DIVIDER ── */
+  .part-divider {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 20px;
+    margin: 80px 0 48px;
+  }
+
+  .part-divider::before,
+  .part-divider::after {
+    content: '';
+    height: 1px;
+    background: var(--ink);
+  }
+
+  .part-label {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .part-time {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-light);
+    white-space: nowrap;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    margin-bottom: 52px;
+    padding-left: 0;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--paper-rule);
+  }
+
+  .section-number {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent-mid);
+    letter-spacing: 0.06em;
+    flex-shrink: 0;
+  }
+
+  h2.section-title {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.4;
+    flex: 1;
+  }
+
+  .section-time {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-faint);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* ── BULLETS ── */
+  .point-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .point-list li {
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--paper-rule);
+    font-size: 14px;
+    color: var(--ink-mid);
+    line-height: 1.75;
+  }
+
+  .point-list li:last-child { border-bottom: none; }
+
+  .point-list li::before {
+    content: '—';
+    color: var(--accent-mid);
+    font-family: var(--mono);
+    font-size: 12px;
+    padding-top: 2px;
+  }
+
+  .point-list li strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .point-list li .tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    padding: 1px 7px;
+    letter-spacing: 0.04em;
+    vertical-align: middle;
+    margin-left: 4px;
+  }
+
+  /* ── NOTE BOX ── */
+  .note-box {
+    background: var(--paper-warm);
+    border-left: 3px solid var(--accent);
+    padding: 14px 20px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: var(--ink-mid);
+    font-style: italic;
+    line-height: 1.7;
+  }
+
+  /* ── PRACTICE SECTION ── */
+  .practice-card {
+    border: 1px solid var(--paper-rule);
+    margin-bottom: 40px;
+  }
+
+  .practice-header {
+    background: var(--accent);
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .practice-header h2 {
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.4;
+  }
+
+  .practice-header .time-badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: rgba(255,255,255,0.65);
+    flex-shrink: 0;
+    margin-left: 16px;
+  }
+
+  .practice-body {
+    padding: 24px;
+  }
+
+  /* ── FOOTER ── */
+  .site-footer {
+    margin-top: 100px;
+    padding-top: 24px;
+    border-top: 1px solid var(--paper-rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-note {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .title-block  { animation: fadeUp 0.6s ease both; }
+  .meta-grid    { animation: fadeUp 0.6s 0.1s ease both; }
+  .part-divider { animation: fadeUp 0.5s 0.15s ease both; }
+  .section      { animation: fadeUp 0.5s 0.2s ease both; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .page { padding: 48px 24px 80px; }
+    .meta-grid { grid-template-columns: 1fr; }
+    .meta-cell { border-right: none; border-bottom: 1px solid var(--paper-rule); }
+    .meta-cell:last-child { border-bottom: none; }
+    .part-label { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <span class="header-label">課綱文件</span>
+    <span class="draft-badge">草稿</span>
+  </header>
+
+  <!-- TITLE -->
+  <div class="title-block">
+    <p class="title-eyebrow">研究生工作坊</p>
+    <h1 class="main-title">AI Agent<br><em>理論與實作工作坊</em></h1>
+    <p class="title-subtitle">概念講述 × 動手實作｜面向研究生</p>
+  </div>
+
+  <!-- META -->
+  <div class="meta-grid">
+    <div class="meta-cell">
+      <span class="meta-key">總時長</span>
+      <span class="meta-val">約 2 小時</span>
+    </div>
+    <div class="meta-cell">
+      <span class="meta-key">對象</span>
+      <span class="meta-val">研究生（含非技術背景）</span>
+    </div>
+    <div class="meta-cell">
+      <span class="meta-key">結構</span>
+      <span class="meta-val">分享 60 min ＋ 實作 60 min</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- PART I                             -->
+  <!-- ══════════════════════════════════ -->
+  <div class="part-divider">
+    <span class="part-label">分享 Part</span>
+    <span class="part-time">認識 Agent 與業界現況</span>
+  </div>
+
+  <!-- 章節 1 -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-number">CH.01</span>
+      <h2 class="section-title">LLM 的演進</h2>
+      <span class="section-time">5–10 min</span>
+    </div>
+    <ul class="point-list">
+      <li><span>LLM 發展脈絡：從早期語言模型到 GPT、Claude 等大型模型的躍進</span></li>
+      <li><span>模型能力的快速演進：理解、推理、生成能力的質變</span></li>
+      <li><span><strong>A Bitter Lesson 的實現：</strong>規模與通用計算取代人工知識工程，模型能力大幅躍進</span></li>
+    </ul>
+  </div>
+
+  <!-- 章節 2 -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-number">CH.02</span>
+      <h2 class="section-title">什麼是 Agent？</h2>
+      <span class="section-time">20 min</span>
+    </div>
+    <ul class="point-list">
+      <li><span>LLM 賦予機器高度自主性，以 LLM 為核心打造的服務完全顛覆傳統產品範式</span></li>
+      <li><span>Agent 的核心運作邏輯：<strong>Perception → Memory → Planning → Action</strong> 循環</span></li>
+      <li><span><strong>Simon's Scissors：</strong>模型表現由 <span class="tag">Cognition</span> 模型參數結構 與 <span class="tag">Context</span> 輸入脈絡 共同決定</span></li>
+      <li><span>由此帶出兩個新興領域：Prompt Engineering → <strong>Context Engineering</strong>、Data → <strong>Environment</strong></span></li>
+      <li><span><strong>補充案例：</strong>資料結構清晰、API 整理完善的組織導入 Agent 效率更高——資訊環境的品質決定 Agent 能力上限</span></li>
+    </ul>
+  </div>
+
+  <!-- 章節 3 -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-number">CH.03</span>
+      <h2 class="section-title">數位服務本質的轉變</h2>
+      <span class="section-time">20 min</span>
+    </div>
+    <ul class="point-list">
+      <li><span>服務結構演進：<strong>UI + Flow（使用者自行操作）→ Agent（使用者交付任務）</strong></span></li>
+      <li><span>User 的擴展：使用者不再只是人，Agent 也是 User——介面、資料格式、回應結構都需要重新思考</span></li>
+      <li><span>因應 Agent 新軟體架構，設計師任務產生轉變：從設計操作流程，轉向設計任務邊界與行為準則；設計領域熱議的典範轉移：<strong>User Journey Mapping → Intent-System Mapping</strong></span></li>
+      <li><span>服務研究與測試的轉變：從觀察「人如何操作介面」到理解「Agent 在哪個環節認知失敗」；<strong>Observability（可觀測性）</strong>成為新的核心能力，需追蹤 context 理解與工具調用鏈</span></li>
+    </ul>
+  </div>
+
+  <!-- 章節 4 -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-number">CH.04</span>
+      <h2 class="section-title">職能角色的重塑</h2>
+      <span class="section-time">5–10 min</span>
+    </div>
+    <ul class="point-list">
+      <li><span>過去的職能分工源自舊結構需求，服務結構改變則各角色被期待交付的產出跟著轉變</span></li>
+      <li><span>各職種的危與機：當 Agent 可以生成原型、自動分析行為數據，不可替代的核心價值是什麼？</span></li>
+      <li><span>未來可能進入職能邊界模糊化的時代：<strong>個人全能化</strong> vs. <strong>更高抽象層次的再分工</strong></span></li>
+      <li><span>稀缺的將是「能清楚定義問題、設定目標、判斷產出品質」的整合型判斷力——呼應 <strong>How → What</strong> 的轉移</span></li>
+    </ul>
+  </div>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- PART II                            -->
+  <!-- ══════════════════════════════════ -->
+  <div class="part-divider">
+    <span class="part-label">實作 Part</span>
+    <span class="part-time">動手體驗</span>
+  </div>
+
+  <!-- 實作 1 -->
+  <div class="practice-card">
+    <div class="practice-header">
+      <h2>實作 (1)　用 Agent 協助開發前後端網路應用<br>——無技術背景的起手式</h2>
+      <span class="time-badge">30 min</span>
+    </div>
+    <div class="practice-body">
+      <div class="note-box">目標：讓無技術背景的研究生建立起手式的心智模型，了解與 Agent 協作開發前需要具備哪些基礎概念。</div>
+      <ul class="point-list">
+        <li><span>建立基礎心智模型：前後端的分工概念、程式開發的專案結構是什麼</span></li>
+        <li><span>開發環境的基本認識：虛擬環境、套件管理（pip / npm）、常見錯誤排除</span></li>
+        <li><span>資料儲存的類型選擇：關聯式 vs. 非關聯式資料庫的差異與使用情境</span></li>
+        <li><span>如何與 Agent 協作開發：怎麼描述需求、怎麼拆解任務、怎麼看懂 Agent 產出的程式碼</span></li>
+        <li><span><strong>實作：</strong>從一句話需求出發，透過 Agent 逐步建立一個可運行的簡單網路應用</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 實作 2 -->
+  <div class="practice-card">
+    <div class="practice-header">
+      <h2>實作 (2)　搭建一個 Agent Prototype<br>——工具調用與 Context 加載</h2>
+      <span class="time-badge">30 min</span>
+    </div>
+    <div class="practice-body">
+      <div class="note-box">目標：讓學生快速體驗從零搭建一個具備工具調用能力的 Agent，理解 Context 加載的運作方式。</div>
+      <ul class="point-list">
+        <li><span>設計一個具備工具調用（<strong>Tool Use</strong>）能力的 Agent：定義工具、設定觸發條件</span></li>
+        <li><span>Context 加載的實踐：如何將知識、文件、歷史對話注入 Agent 的運作流程</span></li>
+        <li><span>快速實現一個可展示的 Agent Prototype，體驗從零到可用的完整流程</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <span class="footer-note">AI Agent 理論與實作工作坊　課綱草稿</span>
+    <span class="footer-note">持續更新中</span>
+  </footer>
+
+</div>
+</body>
+</html>
