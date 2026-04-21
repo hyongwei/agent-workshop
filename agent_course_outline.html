@@ -547,7 +547,7 @@
         <a href="#ch01" class="toc-item">CH.01　LLM 的演進</a>
         <a href="#ch02" class="toc-item">CH.02　什麼是 Agent？</a>
         <a href="#ch03" class="toc-item">CH.03　如何設計 Agent 產品</a>
-        <a href="#ch04" class="toc-item">CH.04　如何設計自己的 Agent 協作系統</a>
+        <a href="#ch04" class="toc-item">CH.04　職能角色價值的重塑</a>
       </div>
       <div class="toc-col">
         <p class="toc-part">實作 Part</p>
@@ -622,12 +622,11 @@
     </div>
     <ul class="point-list">
       <li><span><strong>服務典範轉移：從操作流程設計 → 意圖系統設計（Intent-System Mapping、Outcome-Oriented Design）</strong>設計師的核心工作從「設計使用者操作步驟」轉向「定義 Agent 的行為邊界、執行準則、任務環境」，從介面設計師擴展為系統編排者</span></li>
-      <li><span><strong>個人化定義與期待的轉變：</strong>傳統個人化是「給你看什麼」——推薦錯了你滑過去就好；Agent 時代的個人化是「幫你做什麼、怎麼做」——行動錯了是真實後果，個人化從體驗問題變成信任問題。個人脈絡的承載需要同時處理三個維度：<strong>過去</strong>（你是誰、你有什麼）、<strong>現在</strong>（你在哪、你需要什麼）、<strong>未來</strong>（你想去哪、你在意什麼）。個人化的天花板由信任深度決定：用戶願意授權 Agent 代替自己做多少事，取決於信任的累積深度</span></li>
+      <li><span><strong>個人化定義與期待的轉變：</strong>傳統個人化是「給你看什麼」——推薦錯了你滑過去就好；Agent 時代的個人化是「幫你做什麼、怎麼做」，Agent 需求了解用戶的決策邏輯與行為偏好——行動錯了是真實後果。個人脈絡的承載需要同時處理三個維度：<strong>過去</strong>（你是誰、你有什麼）、<strong>現在</strong>（你在哪、你需要什麼）、<strong>未來</strong>（你想去哪、你在意什麼），與傳統產品相比，不再是平台單方面的蒐集、預測，而是與用戶共同建構。個人化的天花板由信任深度決定：用戶願意授權 Agent 代替自己做多少事、是否提供足夠厚度的脈絡，取決於信任的累積</span></li>
       <li><span><strong>行為邊界治理：事前規範、事中可觀測、事後錯誤邊界</strong>「AI 像實習生」——遵循漸進授權（Progressive Trust）原則，不給最高權限，不讓它在沒有 review 機制下執行關鍵動作。解釋性、可觀測性、HITL 是幫助 Agent 與用戶建立信任關係的核心議題</span></li>
       <li><span><strong>機率系統的本質：不確定性不是缺陷，是設計條件</strong>傳統系統相同輸入產生相同輸出；AI 服務的輸出具有分佈性——設計目標從「驗證正確性」轉向「管理分佈與風險」</span></li>
     </ul>
-    <div class="quote-block">傳統產品問的是「用戶想要什麼？」Agent 時代的產品要問的是「用戶此刻是誰，他正在成為什麼？」</div>
-    <div class="discussion-box">黃仁勳預測：未來平台級 Agent 將侵蝕大量垂直 APP 與系統服務的市場空間。如果這個預測成真，哪些產品會先消失？哪些反而更有機會？</div>
+    <div class="discussion-box">黃仁勳預測：未來平台級 Agent 將侵蝕大量垂直 APP 與系統服務的市場空間。所以我們還要做垂直產品嗎？未來的「產品」又是什麼？</div>
     <details class="ref-block">
       <summary class="ref-summary">參考資料</summary>
       <ul class="ref-list">
@@ -641,12 +640,12 @@
   <div class="section" id="ch04">
     <div class="section-header">
       <span class="section-number">CH.04</span>
-      <h2 class="section-title">如何設計自己的 Agent 協作系統</h2>
+      <h2 class="section-title">職能角色價值的重塑</h2>
       <span class="section-time">15 min</span>
     </div>
     <p style="font-size:14px;color:var(--ink-mid);margin-bottom:12px;">技能被拉平後，對數位工作者帶來的影響：</p>
     <ul class="point-list">
-      <li><span><strong>角色走向「Builder」：你是 workflow 的架構師，不只是節點</strong>Builder = PM 思維 + 設計能力 + 技術能力；真正的差異不在於「會不會用 AI」，而在於能否設計整個 AI Workflow</span></li>
+      <li><span><strong>多種角色走向「Builder」：你是 workflow 的架構師，不只是節點</strong>Builder = 產品思維 + 設計能力 + 技術能力 + 業務能力；真正的差異不在於「會不會用 AI」，而在於能否設計整個 AI Workflow</span></li>
       <li><span><strong>差異化來自獨特的認知交集：</strong>生成式 AI 降低了進入專業的門檻，部分可標準化的技能將被拉平；但真正的垂直專業深度與個人經驗洞察反而會變得更有價值——不可替代性來自個人獨特的跨域認知組合：觀點、品味、判斷力</span></li>
       <li><span><strong>How → What 的轉移：判斷「值得做什麼」比「怎麼做」更稀缺</strong>當 Agent 承擔大量執行任務，能清楚定義問題、設定目標、判斷產出品質的整合型判斷力（Product Sense）成為核心競爭力</span></li>
     </ul>
