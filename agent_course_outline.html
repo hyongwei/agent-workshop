@@ -266,6 +266,34 @@
     margin-left: 4px;
   }
 
+  /* ── SUB LIST ── */
+  .sub-list {
+    list-style: none;
+    padding: 8px 0 2px 0;
+    margin: 0;
+  }
+
+  .sub-list li {
+    display: grid;
+    grid-template-columns: 14px 1fr;
+    gap: 6px;
+    padding: 5px 0;
+    border-bottom: none;
+    font-size: 13px;
+    color: var(--ink-light);
+    line-height: 1.7;
+  }
+
+  .sub-list li:last-child { border-bottom: none; }
+
+  .sub-list li::before {
+    content: '·';
+    color: var(--ink-faint);
+    font-size: 18px;
+    line-height: 1.2;
+    font-family: var(--mono);
+  }
+
   /* ── NOTE BOX ── */
   .note-box {
     background: var(--paper-warm);
@@ -574,8 +602,23 @@
     </div>
     <ul class="point-list">
       <li><span>LLM 的本質與演進脈絡：從 BERT 到 ChatGPT、Claude，模型能力發生質變——但本質仍是「預測下一個詞」，理解這個本質有助於後續評估 Agent 的能力邊界、構思 Agent harness</span></li>
-      <li><span><strong>A Bitter Lesson：規模終將勝過人工知識工程（Rich Sutton）：</strong>通用計算能力的規模化，長期表現優於人工設計的知識工程——解釋了為何 LLM 能在短時間顛覆多個領域。AI 進步很快，可能今天相信的東西明天又改變了，保持開放態度、持續學習反思很重要</span></li>
-      <li><span><strong>Software 3.0（Andrej Karpathy）：以自然語言提示 LLM：</strong>神經網路透過 LLM 變得可程式化，它是一種新型態的電腦。提示詞（prompts）成為可編程 LLM 的程式，而且這些提示是用自然語言寫成的</span></li>
+      <li>
+        <span>
+          <strong>A Bitter Lesson：規模終將勝過人工知識工程（Rich Sutton）</strong>
+          <ul class="sub-list">
+            <li><span>通用計算能力的規模化，長期表現優於人工設計的知識工程——解釋了為何 LLM 能在短時間顛覆多個領域</span></li>
+            <li><span>AI 進步很快，可能今天相信的東西明天又改變了，保持開放態度、持續學習反思很重要</span></li>
+          </ul>
+        </span>
+      </li>
+      <li>
+        <span>
+          <strong>Software 3.0（Andrej Karpathy）：以自然語言提示 LLM</strong>
+          <ul class="sub-list">
+            <li><span>神經網路透過 LLM 變得可程式化，它是一種新型態的電腦。提示詞（prompts）成為可編程 LLM 的程式，而且這些提示是用自然語言寫成的</span></li>
+          </ul>
+        </span>
+      </li>
     </ul>
     <details class="ref-block">
       <summary class="ref-summary">參考資料</summary>
@@ -597,10 +640,39 @@
       <span class="section-time">20 min</span>
     </div>
     <ul class="point-list">
-      <li><span>Agent 的運作邏輯：<strong>ReAct Loop（Reason + Act）</strong>思考 → 行動 → 觀察 → 再思考；Agent 的核心支柱：<span class="tag">Memory</span><span class="tag">Planning</span><span class="tag">Tools</span><span class="tag">Action</span></span></li>
-      <li><span><strong>Context Engineering 與 Environment：</strong>借用 Simon's Scissors 的比喻——Agent 的表現由模型本身的能力，加上輸入的脈絡品質共同決定</span></li>
-      <li><span><strong>實現人智協作：與 Agent 共同成長：</strong>Agent 在觀察你的工作流程並結構化為可重用能力（SKILL）；你也在透過知識注入塑造它（Personal Wiki）——最終每個人的 Agent 都是獨一無二的。目前模型能力仍在持續突破，所需的系統架構輔助與人機協作方式也需要隨之調整——這不是一次性設計，而是持續演化的關係</span></li>
-      <li><span><strong>案例分享｜OpenClaw：「Agent 的 ChatGPT 時刻」：</strong>奧地利開發者一個週末獨立完成，上線一個月 GitHub 破 6 萬星。三大特性：持久記憶、主動執行、即時回報——Agent 從工具真正變成協作夥伴的臨界點</span></li>
+      <li>
+        <span>
+          <strong>Agent 的運作邏輯：ReAct Loop（Reason + Act）</strong>思考 → 行動 → 觀察 → 再思考
+          <ul class="sub-list">
+            <li><span>Agent 的核心支柱：<span class="tag">Memory</span><span class="tag">Planning</span><span class="tag">Tools</span><span class="tag">Action</span></span></li>
+          </ul>
+        </span>
+      </li>
+      <li>
+        <span>
+          <strong>Context Engineering 與 Environment</strong>
+          <ul class="sub-list">
+            <li><span>借用 Simon's Scissors 的比喻：Agent 的表現由模型本身的能力，加上輸入的脈絡品質共同決定</span></li>
+          </ul>
+        </span>
+      </li>
+      <li>
+        <span>
+          <strong>實現人智協作：與 Agent 共同成長</strong>
+          <ul class="sub-list">
+            <li><span>Agent 在觀察你的工作流程並結構化為可重用能力（SKILL）；你也在透過知識注入塑造它（Personal Wiki）——最終每個人的 Agent 都是獨一無二的</span></li>
+            <li><span>目前模型能力仍在持續突破，所需的系統架構輔助與人機協作方式也需要隨之調整——這不是一次性設計，而是持續演化的關係</span></li>
+          </ul>
+        </span>
+      </li>
+      <li>
+        <span>
+          <strong>案例分享｜OpenClaw：「Agent 的 ChatGPT 時刻」</strong>
+          <ul class="sub-list">
+            <li><span>奧地利開發者一個週末獨立完成，上線一個月 GitHub 破 6 萬星。三大特性：持久記憶、主動執行、即時回報——Agent 從工具真正變成協作夥伴的臨界點</span></li>
+          </ul>
+        </span>
+      </li>
     </ul>
     <div class="discussion-box">當 Agent 能力越來越強、可以直接操作你的電腦與檔案，你願意給它多大的權限？你會怎麼設定它的行為邊界？</div>
     <details class="ref-block">
@@ -621,10 +693,41 @@
       <span class="section-time">20 min</span>
     </div>
     <ul class="point-list">
-      <li><span><strong>服務典範轉移：從操作流程設計 → 意圖系統設計（Intent-System Mapping、Outcome-Oriented Design）</strong>設計師的核心工作從「設計使用者操作步驟」轉向「定義 Agent 的行為邊界、執行準則、任務環境」，從介面設計師擴展為系統編排者</span></li>
-      <li><span><strong>個人化定義與期待的轉變：</strong>傳統個人化是「給你看什麼」——推薦錯了你滑過去就好；Agent 時代的個人化是「幫你做什麼、怎麼做」，Agent 需求了解用戶的決策邏輯與行為偏好——行動錯了是真實後果。個人脈絡的承載需要同時處理三個維度：<strong>過去</strong>（你是誰、你有什麼）、<strong>現在</strong>（你在哪、你需要什麼）、<strong>未來</strong>（你想去哪、你在意什麼），與傳統產品相比，不再是平台單方面的蒐集、預測，而是與用戶共同建構。個人化的天花板由信任深度決定：用戶願意授權 Agent 代替自己做多少事、是否提供足夠厚度的脈絡，取決於信任的累積</span></li>
-      <li><span><strong>行為邊界治理：事前規範、事中可觀測、事後錯誤邊界</strong>「AI 像實習生」——遵循漸進授權（Progressive Trust）原則，不給最高權限，不讓它在沒有 review 機制下執行關鍵動作。解釋性、可觀測性、HITL 是幫助 Agent 與用戶建立信任關係的核心議題</span></li>
-      <li><span><strong>機率系統的本質：不確定性不是缺陷，是設計條件</strong>傳統系統相同輸入產生相同輸出；AI 服務的輸出具有分佈性——設計目標從「驗證正確性」轉向「管理分佈與風險」</span></li>
+      <li>
+        <span>
+          <strong>服務典範轉移：從操作流程設計 → 意圖系統設計（Intent-System Mapping、Outcome-Oriented Design）</strong>
+          <ul class="sub-list">
+            <li><span>設計師的核心工作從「設計使用者操作步驟」轉向「定義 Agent 的行為邊界、執行準則、任務環境」，從介面設計師擴展為系統編排者</span></li>
+          </ul>
+        </span>
+      </li>
+      <li>
+        <span>
+          <strong>個人化定義與期待的轉變</strong>
+          <ul class="sub-list">
+            <li><span>傳統個人化是「給你看什麼」——推薦錯了你滑過去就好；Agent 時代的個人化是「幫你做什麼、怎麼做」，Agent 需求了解用戶的決策邏輯與行為偏好——行動錯了是真實後果</span></li>
+            <li><span>個人脈絡的承載需要同時處理三個維度：<strong>過去</strong>（你是誰、你有什麼）、<strong>現在</strong>（你在哪、你需要什麼）、<strong>未來</strong>（你想去哪、你在意什麼），與傳統產品相比，不再是平台單方面的蒐集、預測，而是與用戶共同建構</span></li>
+            <li><span>個人化的天花板由信任深度決定：用戶願意授權 Agent 代替自己做多少事、是否提供足夠厚度的脈絡，取決於信任的累積</span></li>
+          </ul>
+        </span>
+      </li>
+      <li>
+        <span>
+          <strong>行為邊界治理：事前規範、事中可觀測、事後錯誤邊界</strong>
+          <ul class="sub-list">
+            <li><span>「AI 像實習生」——遵循漸進授權（Progressive Trust）原則，不給最高權限，不讓它在沒有 review 機制下執行關鍵動作</span></li>
+            <li><span>解釋性、可觀測性、HITL 是幫助 Agent 與用戶建立信任關係的核心議題</span></li>
+          </ul>
+        </span>
+      </li>
+      <li>
+        <span>
+          <strong>機率系統的本質：不確定性不是缺陷，是設計條件</strong>
+          <ul class="sub-list">
+            <li><span>傳統系統相同輸入產生相同輸出；AI 服務的輸出具有分佈性——設計目標從「驗證正確性」轉向「管理分佈與風險」</span></li>
+          </ul>
+        </span>
+      </li>
     </ul>
     <div class="discussion-box">黃仁勳預測：未來平台級 Agent 將侵蝕大量垂直 APP 與系統服務的市場空間。所以我們還要做垂直產品嗎？未來的「產品」又是什麼？</div>
     <details class="ref-block">
@@ -645,9 +748,30 @@
     </div>
     <p style="font-size:14px;color:var(--ink-mid);margin-bottom:12px;">技能被拉平後，對數位工作者帶來的影響：</p>
     <ul class="point-list">
-      <li><span><strong>多種角色走向「Builder」：你是 workflow 的架構師，不只是節點</strong>Builder = 產品思維 + 設計能力 + 技術能力 + 業務能力；真正的差異不在於「會不會用 AI」，而在於能否設計整個 AI Workflow</span></li>
-      <li><span><strong>差異化來自獨特的認知交集：</strong>生成式 AI 降低了進入專業的門檻，部分可標準化的技能將被拉平；但真正的垂直專業深度與個人經驗洞察反而會變得更有價值——不可替代性來自個人獨特的跨域認知組合：觀點、品味、判斷力</span></li>
-      <li><span><strong>How → What 的轉移：判斷「值得做什麼」比「怎麼做」更稀缺</strong>當 Agent 承擔大量執行任務，能清楚定義問題、設定目標、判斷產出品質的整合型判斷力（Product Sense）成為核心競爭力</span></li>
+      <li>
+        <span>
+          <strong>多種角色走向「Builder」：你是 workflow 的架構師，不只是節點</strong>
+          <ul class="sub-list">
+            <li><span>Builder = 產品思維 + 設計能力 + 技術能力 + 業務能力；真正的差異不在於「會不會用 AI」，而在於能否設計整個 AI Workflow</span></li>
+          </ul>
+        </span>
+      </li>
+      <li>
+        <span>
+          <strong>差異化來自獨特的認知交集</strong>
+          <ul class="sub-list">
+            <li><span>生成式 AI 降低了進入專業的門檻，部分可標準化的技能將被拉平；但真正的垂直專業深度與個人經驗洞察反而會變得更有價值——不可替代性來自個人獨特的跨域認知組合：觀點、品味、判斷力</span></li>
+          </ul>
+        </span>
+      </li>
+      <li>
+        <span>
+          <strong>How → What 的轉移：判斷「值得做什麼」比「怎麼做」更稀缺</strong>
+          <ul class="sub-list">
+            <li><span>當 Agent 承擔大量執行任務，能清楚定義問題、設定目標、判斷產出品質的整合型判斷力（Product Sense）成為核心競爭力</span></li>
+          </ul>
+        </span>
+      </li>
     </ul>
     <details class="ref-block">
       <summary class="ref-summary">參考資料</summary>
